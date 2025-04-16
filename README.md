@@ -1,9 +1,8 @@
 # siMonikaVer3
 
 
-# siMonikaVer3
-
 ![Logo Kabupaten Mojokerto](assets/images/logo-mojokerto.png)
+
 
 Aplikasi resmi dari **Dinas Jawa Timur Kabupaten Mojokerto** untuk mencatat pekerjaan programmer dan mahasiswa magang. 
 Proyek ini bertujuan untuk meningkatkan transparansi dan efisiensi pengelolaan tugas.
