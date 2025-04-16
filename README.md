@@ -82,6 +82,6 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
 Untuk informasi lebih lanjut, hubungi:
 - **Dinas Jawa Timur Kabupaten Mojokerto**
-- Email: dinas@example.com
-- Telepon: 123-456-789
+- Email: 
+- Telepon: 
 
