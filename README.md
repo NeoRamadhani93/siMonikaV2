@@ -13,7 +13,8 @@ Proyek ini bertujuan untuk meningkatkan transparansi dan efisiensi pengelolaan t
 ## Fitur Utama
 - **Pencatatan Tugas**: Dokumentasi pekerjaan harian programmer dan mahasiswa.
 - **Laporan Kinerja**: Laporan pekerjaan mingguan atau bulanan.
-- **Integrasi User Roles**: Hak akses berbeda untuk programmer dan mahasiswa magang.
+- **Integrasi User Roles**: Hak akses berbeda untuk programmer
+- 
 
 ---
 
