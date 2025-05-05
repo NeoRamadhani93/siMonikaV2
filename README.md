@@ -1,7 +1,6 @@
 
 # siMonikaVer2
 
-![Logo Kabupaten Mojokerto](assets/images/logo-mojokerto.png)
 
 Aplikasi resmi dari **Dinas Jawa Timur Kabupaten Mojokerto** untuk mencatat pekerjaan programmer dan mahasiswa magang. 
 Proyek ini bertujuan untuk meningkatkan transparansi dan efisiensi pengelolaan tugas.
@@ -28,7 +27,7 @@ Proyek ini bertujuan untuk meningkatkan transparansi dan efisiensi pengelolaan t
 3. Instal dependensi:
    ```bash
    composer install
-   npm install
+   
    ```
 4. Konfigurasi `.env`:
    Salin file `.env.example` menjadi `.env` dan sesuaikan konfigurasi.
@@ -71,11 +70,6 @@ Kami membuka peluang untuk kontribusi dari programmer dan mahasiswa magang. Sila
 
 ---
 
-## Lisensi
-
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
-
----
 
 ## Kontak
 
