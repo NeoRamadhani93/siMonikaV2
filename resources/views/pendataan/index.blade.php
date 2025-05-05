@@ -139,16 +139,33 @@
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Tombol Toggle View antara Tabel dan Linimasa
-        let toggleButton = document.getElementById("toggleView");
-        if (toggleButton) {
-            toggleButton.addEventListener("click", function () {
-                document.getElementById("tableContainer").classList.toggle("d-none");
-                document.getElementById("pendataanTimeline").classList.toggle("d-none");
-                this.textContent = this.textContent.includes("Tabel") ? "Tampilkan Data Magang" : "Tampilkan Tabel";
-            });
-        }
+    // Script untuk tombol edit
+document.addEventListener('DOMContentLoaded', function() {
+    // Menambahkan event listener pada setiap tombol edit dalam tabel
+    document.querySelectorAll(".btn-edit").forEach(button => {
+        button.addEventListener("click", function() {
+            let id = this.getAttribute("data-id");
+            let universitas = this.getAttribute("data-universitas");
+            let jumlah_orang = this.getAttribute("data-jumlah_orang");
+            let tanggal_masuk = this.getAttribute("data-tanggal_masuk");
+            let tanggal_keluar = this.getAttribute("data-tanggal_keluar");
+
+            // Mengisi form edit dengan data yang dipilih
+            document.getElementById("edit-universitas").value = universitas;
+            document.getElementById("edit-jumlah_orang").value = jumlah_orang;
+            document.getElementById("edit-tanggal_masuk").value = tanggal_masuk;
+            document.getElementById("edit-tanggal_keluar").value = tanggal_keluar;
+
+            // Menyesuaikan action form
+            let form = document.getElementById("pendataanEditForm");
+            let baseAction = form.getAttribute("data-base-action");
+            form.action = baseAction.replace(':id', id);
+            
+            // Menampilkan modal edit
+            new bootstrap.Modal(document.getElementById("pendataanEditModal")).show();
+        });
+    });
+});
 
         // Container untuk Timeline Pendataan
         let container = document.getElementById("pendataanTimeline");
@@ -221,22 +238,25 @@
         let timeline = new vis.Timeline(container, items, options);
 
         // Event Listener untuk Klik pada Timeline (untuk Info Pendataan)
-        timeline.on("select", function (props) {
-            if (props.items.length > 0) {
-                let itemId = props.items[0];
-                let item = items.get(itemId);
+        // Event Listener untuk Klik pada Timeline (untuk Info Pendataan)
+// Event Listener untuk Klik pada Timeline (untuk Info Pendataan)
+timeline.on("select", function (props) {
+    if (props.items.length > 0) {
+        let itemId = props.items[0];
+        let item = items.get(itemId);
 
-                // Mengisi modal info dengan data yang dipilih
-                $("#infoUniversitas").text(item.content);
-                $("#infoJumlahOrang").text(item.deskripsi.split(": ")[1]); // Ambil jumlah orang
-                $("#infoTanggalMasuk").text(item.start);
-                $("#infoTanggalKeluar").text(item.end);
+        // Mengisi modal info dengan data yang dipilih
+        document.getElementById("infoUniversitas").textContent = item.content;
+        document.getElementById("infoJumlahOrang").textContent = item.deskripsi.split(": ")[1]; // Ambil jumlah orang
+        document.getElementById("infoTanggalMasuk").textContent = item.start;
+        document.getElementById("infoTanggalKeluar").textContent = item.end;
+        document.getElementById("info-pendataan-id").value = itemId;
 
-                // Tampilkan modal info
-                $("#modalInfoPendataan").modal("show");
-            }
-        });
-    });
+        // Tampilkan modal info
+        new bootstrap.Modal(document.getElementById("modalInfoPendataan")).show();
+    }
+});
+    
 
 
     // Validasi Tanggal Masuk dan Keluar
@@ -321,58 +341,50 @@
     }
 
     // Pop Up Hapus
-    document.querySelectorAll(".btn-delete").forEach(button => {
-        button.addEventListener("click", function () {
-            let id = this.getAttribute("data-id");
+    // Perbaikan event listener untuk tombol hapus
+// Pop Up Hapus
+document.querySelectorAll(".btn-delete").forEach(button => {
+    button.addEventListener("click", function() {
+        let id = this.getAttribute("data-id");
 
-            Swal.fire({
-                title: "Yakin ingin menghapus?",
-                text: "Data pendataan yang dihapus tidak dapat dikembalikan!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Ya, Hapus!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(`{{ url('pendataan') }}/${id}`, {
-                        method: "POST",
-                        headers: {
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                            "X-HTTP-Method-Override": "DELETE"
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    icon: "success",
-                                    title: "Berhasil!",
-                                    text: "Data Pendataan berhasil dihapus!",
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Gagal!",
-                                    text: "Terjadi kesalahan saat menghapus data.",
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "Gagal menghapus data. Coba lagi!",
-                            });
-                        });
-                }
-            });
+        Swal.fire({
+            title: "Yakin ingin menghapus?",
+            text: "Data pendataan yang dihapus tidak dapat dikembalikan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, Hapus!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Buat form untuk delete
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `{{ url('pendataan/delete') }}/${id}`;
+                
+                // CSRF token
+                const csrfToken = document.createElement('input');
+                csrfToken.type = 'hidden';
+                csrfToken.name = '_token';
+                csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                // Method spoofing
+                const methodField = document.createElement('input');
+                methodField.type = 'hidden';
+                methodField.name = '_method';
+                methodField.value = 'DELETE';
+                
+                // Tambahkan input ke form
+                form.appendChild(csrfToken);
+                form.appendChild(methodField);
+                
+                // Tambahkan form ke DOM dan submit
+                document.body.appendChild(form);
+                form.submit();
+            }
         });
     });
+});
 </script>
 
 </html>

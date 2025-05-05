@@ -36,31 +36,31 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Menambahkan event listener pada setiap tombol edit
-        document.querySelectorAll(".btn-edit").forEach(button => {
-            button.addEventListener("click", function () {
-                let id = this.getAttribute("data-id");
-                let universitas = this.getAttribute("data-universitas");
-                let jumlah_orang = this.getAttribute("data-jumlah_orang");
-                let tanggal_masuk = this.getAttribute("data-tanggal_masuk");
-                let tanggal_keluar = this.getAttribute("data-tanggal_keluar");
+    // Menambahkan event listener pada setiap tombol edit
+    document.querySelectorAll(".btn-edit").forEach(button => {
+        button.addEventListener("click", function () {
+            let id = this.getAttribute("data-id");
+            let universitas = this.getAttribute("data-universitas");
+            let jumlah_orang = this.getAttribute("data-jumlah_orang");
+            let tanggal_masuk = this.getAttribute("data-tanggal_masuk");
+            let tanggal_keluar = this.getAttribute("data-tanggal_keluar");
 
-                // Memanggil fungsi untuk mengisi modal dengan data
-                editPendataan(id, universitas, jumlah_orang, tanggal_masuk, tanggal_keluar);
-            });
-        });
+            // Memanggil fungsi untuk mengisi modal dengan data
+            document.getElementById("edit-universitas").value = universitas;
+            document.getElementById("edit-jumlah_orang").value = jumlah_orang;
+            document.getElementById("edit-tanggal_masuk").value = tanggal_masuk;
+            document.getElementById("edit-tanggal_keluar").value = tanggal_keluar;
 
-        // Menambahkan event listener untuk membersihkan form ketika modal ditutup
-        let pendataanEditModal = document.getElementById("pendataanEditModal");
-        pendataanEditModal.addEventListener("hidden.bs.modal", function () {
-            let editForm = document.getElementById("pendataanEditForm");
-            if (editForm) {
-                editForm.reset(); // Mengatur ulang form
+            let form = document.getElementById("pendataanEditForm");
+            if (form) {
+                let baseAction = form.getAttribute("data-base-action");
+                form.action = baseAction.replace(":id", id);
             }
-            document.querySelectorAll(".modal-backdrop").forEach(el => el.remove()); // Menghapus backdrop modal
-            document.body.classList.remove("modal-open"); // Menghapus class modal-open
+
+            new bootstrap.Modal(document.getElementById("pendataanEditModal")).show();
         });
     });
+});
 
     // Fungsi untuk mengisi form edit dengan data yang dipilih
     function editPendataan(id, universitas, jumlah_orang, tanggal_masuk, tanggal_keluar) {
