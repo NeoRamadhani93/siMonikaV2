@@ -13,6 +13,7 @@ class ProyekController extends Controller
     {
         $proyek = Proyek::all();  
         $kategori = Kategori::all();
+        
 
         return view('proyek.index', compact('proyek', 'kategori'));
     }
